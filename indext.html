@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Art Collective</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #111;
+      overflow: hidden;
+    }
+
+    /* Create a container to hold the background image */
+    #background-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('artwork.jpg');
+      background-size: cover;
+      background-position: center center;
+      transition: background-position 0.1s ease-out;
+    }
+
+    button {
+      font-size: 2rem;
+      padding: 1em 2em;
+      cursor: pointer;
+      border: none;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 8px;
+      z-index: 1; /* Ensures the button stays on top */
+    }
+
+    button:hover {
+      background: rgba(255, 255, 255, 1);
+    }
+  </style>
+</head>
+<body>
+  <!-- Background Image Container -->
+  <div id="background-container"></div>
+
+  <!-- Button to navigate -->
+  <button onclick="location.href='empty.html'">What Have We Learned? interactive page btw</button>
+
+  <script>
+    let isMouseDown = false;
+    let startX = 0;
+    let startY = 0;
+    let initialBgPositionX = 0;
+    let initialBgPositionY = 0;
+
+    const backgroundContainer = document.getElementById('background-container');
+
+    // When mouse is pressed down
+    document.body.addEventListener('mousedown', function(event) {
+      isMouseDown = true;
+      startX = event.clientX;
+      startY = event.clientY;
+      initialBgPositionX = parseInt(getComputedStyle(backgroundContainer).backgroundPositionX, 10) || 0;
+      initialBgPositionY = parseInt(getComputedStyle(backgroundContainer).backgroundPositionY, 10) || 0;
+    });
+
+    // When mouse is moved
+    document.body.addEventListener('mousemove', function(event) {
+      if (isMouseDown) {
+        let deltaX = event.clientX - startX;
+        let deltaY = event.clientY - startY;
+
+        // Move the entire background image both horizontally and vertically
+        backgroundContainer.style.backgroundPositionX = `${initialBgPositionX + deltaX}px`;
+        backgroundContainer.style.backgroundPositionY = `${initialBgPositionY + deltaY}px`;
+      }
+    });
+
+    // When mouse is released
+    document.body.addEventListener('mouseup', function() {
+      isMouseDown = false;
+    });
+
+    // If mouse leaves the window while dragging
+    document.body.addEventListener('mouseleave', function() {
+      isMouseDown = false;
+    });
+  </script>
+</body>
+</html>
